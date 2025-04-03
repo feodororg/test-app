@@ -157,7 +157,8 @@
             const link = document.createElement('a');
             link.href = mergedCanvas.toDataURL('image/png');
             link.download = 'canvas-image.png';
-            
+            document.body.appendChild(link);
+
             // For mobile devices
             if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
                 const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: false });
@@ -165,6 +166,8 @@
             } else {
                 link.click();
             }
+
+            document.body.removeChild(link);
         }
 
         // Redraw canvases on window resize
