@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing App</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    <canvas id="overlayCanvas"></canvas>
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 10;">
+        <button onclick="setBrushSize(4)">Small</button>
+        <button onclick="setBrushSize(12)">Medium</button>
+        <button onclick="setBrushSize(20)">Large</button>
+    </div>
+    <script>
+        const backgroundCanvas = document.getElementById('backgroundCanvas');
+        const overlayCanvas = document.getElementById('overlayCanvas');
+        const bgCtx = backgroundCanvas.getContext('2d');
+        const overlayCtx = overlayCanvas.getContext('2d');
+
+        // Resize canvases to fill the window
+        function resizeCanvases() {
+            backgroundCanvas.width = overlayCanvas.width = window.innerWidth;
+            backgroundCanvas.height = overlayCanvas.height = window.innerHeight;
+
+            // Redraw the background gradient after resizing
+            drawBackground();
+        }
+
+        // Generate a random color in hexadecimal format
+        function getRandomColor() {
+            return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+        }
+
+        // Create a colorful background with random colors
+        function drawBackground() {
+            const gradient = bgCtx.createLinearGradient(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+            gradient.addColorStop(0, getRandomColor());
+            gradient.addColorStop(0.25, getRandomColor());
+            gradient.addColorStop(0.5, getRandomColor());
+            gradient.addColorStop(0.75, getRandomColor());
+            gradient.addColorStop(1, getRandomColor());
+            bgCtx.fillStyle = gradient;
+            bgCtx.fillRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+        }
+
+        // Initialize the canvases
+        resizeCanvases();
+
+        // Fill the overlay canvas with black
+        overlayCtx.fillStyle = 'black';
+        overlayCtx.fillRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+        // Set composite operation to reveal the background
+        overlayCtx.globalCompositeOperation = 'destination-out';
+
+        let drawing = false;
+        let prevX = null;
+        let prevY = null;
+        let brushSize = 12;
+
+        function setBrushSize(size) {
+            brushSize = size;
+        }
+
+        // Start drawing
+        overlayCanvas.addEventListener('mousedown', (event) => {
+            drawing = true;
+            prevX = event.clientX;
+            prevY = event.clientY;
+        });
+
+        overlayCanvas.addEventListener('mouseup', () => {
+            drawing = false;
+            prevX = null;
+            prevY = null;
+        });
+
+        overlayCanvas.addEventListener('mousemove', draw);
+
+        function draw(event) {
+            if (!drawing) return;
+
+            const currentX = event.clientX;
+            const currentY = event.clientY;
+
+            overlayCtx.beginPath();
+            overlayCtx.moveTo(prevX, prevY);
+            overlayCtx.lineTo(currentX, currentY);
+            overlayCtx.lineWidth = brushSize; // Brush size
+            overlayCtx.lineCap = 'round';
+            overlayCtx.stroke();
+            
+            prevX = currentX;
+            prevY = currentY;
+        }
+
+        // Handle touch events for mobile
+        overlayCanvas.addEventListener('touchstart', (event) => {
+            const touch = event.touches[0];
+            drawing = true;
+            prevX = touch.clientX;
+            prevY = touch.clientY;
+        });
+
+        overlayCanvas.addEventListener('touchend', () => {
+            drawing = false;
+            prevX = null;
+            prevY = null;
+        });
+
+        overlayCanvas.addEventListener('touchmove', (event) => {
+            const touch = event.touches[0];
+            draw({ clientX: touch.clientX, clientY: touch.clientY });
+        });
+
+        // Redraw canvases on window resize
+        window.addEventListener('resize', resizeCanvases);
+    </script>
+</body>
+</html>
