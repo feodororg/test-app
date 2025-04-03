@@ -52,17 +52,31 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 60px;
-            height: 20px;
+            width: 33.33vw;
+            height: 60px;
             transform: translate(-50%, -50%);
             display: none;
             cursor: pointer;
             background: linear-gradient(to right, red, yellow, green, cyan, blue, magenta, red);
         }
+        .color-squares {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .color-square {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
         .confirm-buttons {
             display: none;
             position: absolute;
-            top: 55%;
+            top: 60%;
             left: 50%;
             transform: translate(-50%, -50%);
             display: flex;
@@ -88,6 +102,20 @@
         <button onclick="showColorPicker()">🎨</button>
     </div>
     <div class="color-picker" id="colorPicker"></div>
+    <div class="color-squares" id="colorSquares">
+        <div class="color-square" style="background-color: red;" onclick="selectColor('red')"></div>
+        <div class="color-square" style="background-color: yellow;" onclick="selectColor('yellow')"></div>
+        <div class="color-square" style="background-color: green;" onclick="selectColor('green')"></div>
+        <div class="color-square" style="background-color: cyan;" onclick="selectColor('cyan')"></div>
+        <div class="color-square" style="background-color: blue;" onclick="selectColor('blue')"></div>
+        <div class="color-square" style="background-color: magenta;" onclick="selectColor('magenta')"></div>
+        <div class="color-square" style="background-color: orange;" onclick="selectColor('orange')"></div>
+        <div class="color-square" style="background-color: purple;" onclick="selectColor('purple')"></div>
+        <div class="color-square" style="background-color: pink;" onclick="selectColor('pink')"></div>
+        <div class="color-square" style="background-color: brown;" onclick="selectColor('brown')"></div>
+        <div class="color-square" style="background-color: black;" onclick="selectColor('black')"></div>
+        <div class="color-square" style="background-color: white;" onclick="selectColor('white')"></div>
+    </div>
     <div class="confirm-buttons" id="confirmButtons">
         <button onclick="confirmColors()">✔️</button>
         <button onclick="cancelColors()">❌</button>
@@ -98,6 +126,7 @@
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
         const colorPicker = document.getElementById('colorPicker');
+        const colorSquares = document.getElementById('colorSquares');
         const confirmButtons = document.getElementById('confirmButtons');
         let selectedColors = [];
         let tempColors = [];
@@ -143,42 +172,23 @@
         // Show the color picker
         function showColorPicker() {
             colorPicker.style.display = 'block';
-            confirmButtons.style.display = 'flex';
+            colorSquares.style.display = 'flex';
+            confirmButtons.style.display = 'none';
             tempColors = [];
         }
 
-        // Handle color selection
-        colorPicker.addEventListener('click', (event) => {
-            const rect = colorPicker.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const color = getColorFromGradient(x / rect.width);
+        // Select a color for the gradient
+        function selectColor(color) {
             tempColors.push(color);
             drawBackground(tempColors);
-        });
-
-        // Get color from gradient
-        function getColorFromGradient(position) {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 100, 0);
-            gradient.addColorStop(0, 'red');
-            gradient.addColorStop(0.17, 'yellow');
-            gradient.addColorStop(0.34, 'green');
-            gradient.addColorStop(0.51, 'cyan');
-            gradient.addColorStop(0.68, 'blue');
-            gradient.addColorStop(0.85, 'magenta');
-            gradient.addColorStop(1, 'red');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 100, 1);
-            const imageData = ctx.getImageData(0, 0, 100, 1).data;
-            const index = Math.floor(position * 100) * 4;
-            return `rgb(${imageData[index]}, ${imageData[index + 1]}, ${imageData[index + 2]})`;
+            confirmButtons.style.display = 'flex';
         }
 
         // Confirm color selection
         function confirmColors() {
             selectedColors = tempColors;
             colorPicker.style.display = 'none';
+            colorSquares.style.display = 'none';
             confirmButtons.style.display = 'none';
             drawBackground(selectedColors);
         }
@@ -186,6 +196,7 @@
         // Cancel color selection
         function cancelColors() {
             colorPicker.style.display = 'none';
+            colorSquares.style.display = 'none';
             confirmButtons.style.display = 'none';
             drawBackground(selectedColors);
         }
