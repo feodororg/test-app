@@ -43,6 +43,7 @@
         <button onclick="setBrushSize(4)">Small</button>
         <button onclick="setBrushSize(12)">Medium</button>
         <button class="circle-button" onclick="setBrushSize(20)"></button>
+        <button onclick="changeBackground()">Change Background</button>
         <button onclick="saveImage()">Save</button>
     </div>
     <script>
@@ -75,6 +76,11 @@
             gradient.addColorStop(1, getRandomColor());
             bgCtx.fillStyle = gradient;
             bgCtx.fillRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+        }
+
+        // Change the background to a new random gradient
+        function changeBackground() {
+            drawBackground();
         }
 
         // Initialize the canvases
