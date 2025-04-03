@@ -20,6 +20,25 @@
             top: 0;
             left: 0;
         }
+        .circle-button {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            padding: 0;
+            margin-right: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: 1px solid blue;
+            cursor: pointer;
+        }
+        .small-circle {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: blue;
+        }
         button {
             background-color: blue;
             color: white;
@@ -27,12 +46,6 @@
             padding: 10px 20px;
             cursor: pointer;
             margin-right: 5px;
-        }
-        .circle-button {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            padding: 0;
         }
         .refresh-button {
             padding: 10px;
@@ -48,20 +61,9 @@
             width: 20px;
             height: 20px;
         }
-        .color-picker {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 33.33vw;
-            height: 60px;
-            transform: translate(-50%, -50%);
-            display: none;
-            cursor: pointer;
-            background: linear-gradient(to right, red, yellow, green, cyan, blue, magenta, red);
-        }
         .color-squares {
             position: absolute;
-            top: 55%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             display: none;
@@ -76,7 +78,7 @@
         .confirm-buttons {
             display: none;
             position: absolute;
-            top: 60%;
+            top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
             display: flex;
@@ -88,7 +90,9 @@
     <canvas id="backgroundCanvas"></canvas>
     <canvas id="overlayCanvas"></canvas>
     <div style="position: absolute; top: 10px; left: 10px; z-index: 10;">
-        <button onclick="setBrushSize(4)">Small</button>
+        <button class="circle-button" onclick="setBrushSize(4)">
+            <div class="small-circle"></div>
+        </button>
         <button onclick="setBrushSize(12)">Medium</button>
         <button class="circle-button" onclick="setBrushSize(20)"></button>
         <button onclick="changeBackground()">Change Background</button>
@@ -101,7 +105,6 @@
         </button>
         <button onclick="showColorPicker()">🎨</button>
     </div>
-    <div class="color-picker" id="colorPicker"></div>
     <div class="color-squares" id="colorSquares">
         <div class="color-square" style="background-color: red;" onclick="selectColor('red')"></div>
         <div class="color-square" style="background-color: yellow;" onclick="selectColor('yellow')"></div>
@@ -125,7 +128,6 @@
         const overlayCanvas = document.getElementById('overlayCanvas');
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
-        const colorPicker = document.getElementById('colorPicker');
         const colorSquares = document.getElementById('colorSquares');
         const confirmButtons = document.getElementById('confirmButtons');
         let selectedColors = [];
@@ -171,7 +173,6 @@
 
         // Show the color picker
         function showColorPicker() {
-            colorPicker.style.display = 'block';
             colorSquares.style.display = 'flex';
             confirmButtons.style.display = 'none';
             tempColors = [];
@@ -187,7 +188,6 @@
         // Confirm color selection
         function confirmColors() {
             selectedColors = tempColors;
-            colorPicker.style.display = 'none';
             colorSquares.style.display = 'none';
             confirmButtons.style.display = 'none';
             drawBackground(selectedColors);
@@ -195,7 +195,6 @@
 
         // Cancel color selection
         function cancelColors() {
-            colorPicker.style.display = 'none';
             colorSquares.style.display = 'none';
             confirmButtons.style.display = 'none';
             drawBackground(selectedColors);
