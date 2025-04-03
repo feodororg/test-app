@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-            <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawing App</title>
     <link rel="manifest" href="/manifest.json">
@@ -10,11 +9,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawing App</title>
     <style>
         body {
             margin: 0;
@@ -154,7 +148,7 @@
         });
 
         // Save the image from the merged canvases
-        function saveImage() {
+        async function saveImage() {
             const mergedCanvas = document.createElement('canvas');
             const mergedCtx = mergedCanvas.getContext('2d');
             mergedCanvas.width = backgroundCanvas.width;
@@ -164,21 +158,31 @@
             mergedCtx.drawImage(backgroundCanvas, 0, 0);
             mergedCtx.drawImage(overlayCanvas, 0, 0);
 
-            // Create the download link
-            const link = document.createElement('a');
-            link.href = mergedCanvas.toDataURL('image/png');
-            link.download = 'canvas-image.png';
-            document.body.appendChild(link);
+            // Convert canvas to blob
+            mergedCanvas.toBlob(async (blob) => {
+                const file = new File([blob], "canvas-image.png", { type: "image/png" });
 
-            // For mobile devices
-            if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
-                const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: false });
-                link.dispatchEvent(clickEvent);
-            } else {
-                link.click();
-            }
-
-            document.body.removeChild(link);
+                // Use the Web Share API if supported
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: "Canvas Image",
+                            text: "Check out this image I created!",
+                        });
+                        console.log("Image shared successfully");
+                    } catch (error) {
+                        console.error("Error sharing image:", error);
+                    }
+                } else {
+                    // Fallback: Create a download link and click it
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(file);
+                    link.download = 'canvas-image.png';
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }
+            }, 'image/png');
         }
 
         // Redraw canvases on window resize
