@@ -48,6 +48,26 @@
             width: 20px;
             height: 20px;
         }
+        .color-picker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 20px;
+            transform: translate(-50%, -50%);
+            display: none;
+            cursor: pointer;
+            background: linear-gradient(to right, red, yellow, green, cyan, blue, magenta, red);
+        }
+        .confirm-buttons {
+            display: none;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +78,6 @@
         <button onclick="setBrushSize(12)">Medium</button>
         <button class="circle-button" onclick="setBrushSize(20)"></button>
         <button onclick="changeBackground()">Change Background</button>
-        <button onclick="saveImage()">Save</button>
         <button class="refresh-button" onclick="refreshPage()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="23 4 23 10 17 10"></polyline>
@@ -66,12 +85,22 @@
                 <path d="M3.51 9a9 9 0 015.37-4.34L7 2m10 20a9 9 0 01-5.37 4.34L17 22M1 12a11 11 0 0019.5 6.5M23 12a11 11 0 00-19.5-6.5"></path>
             </svg>
         </button>
+        <button onclick="showColorPicker()">🎨</button>
+    </div>
+    <div class="color-picker" id="colorPicker"></div>
+    <div class="confirm-buttons" id="confirmButtons">
+        <button onclick="confirmColors()">✔️</button>
+        <button onclick="cancelColors()">❌</button>
     </div>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
         const overlayCanvas = document.getElementById('overlayCanvas');
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const confirmButtons = document.getElementById('confirmButtons');
+        let selectedColors = [];
+        let tempColors = [];
 
         // Resize canvases to fill the window
         function resizeCanvases() {
@@ -88,13 +117,20 @@
         }
 
         // Create a colorful background with random colors
-        function drawBackground() {
+        function drawBackground(colors = selectedColors) {
             const gradient = bgCtx.createLinearGradient(0, 0, backgroundCanvas.width, backgroundCanvas.height);
-            gradient.addColorStop(0, getRandomColor());
-            gradient.addColorStop(0.25, getRandomColor());
-            gradient.addColorStop(0.5, getRandomColor());
-            gradient.addColorStop(0.75, getRandomColor());
-            gradient.addColorStop(1, getRandomColor());
+            if (colors.length === 0) {
+                gradient.addColorStop(0, getRandomColor());
+                gradient.addColorStop(0.25, getRandomColor());
+                gradient.addColorStop(0.5, getRandomColor());
+                gradient.addColorStop(0.75, getRandomColor());
+                gradient.addColorStop(1, getRandomColor());
+            } else {
+                const step = 1 / (colors.length - 1);
+                colors.forEach((color, index) => {
+                    gradient.addColorStop(step * index, color);
+                });
+            }
             bgCtx.fillStyle = gradient;
             bgCtx.fillRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
         }
@@ -102,6 +138,56 @@
         // Change the background to a new random gradient
         function changeBackground() {
             drawBackground();
+        }
+
+        // Show the color picker
+        function showColorPicker() {
+            colorPicker.style.display = 'block';
+            confirmButtons.style.display = 'flex';
+            tempColors = [];
+        }
+
+        // Handle color selection
+        colorPicker.addEventListener('click', (event) => {
+            const rect = colorPicker.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const color = getColorFromGradient(x / rect.width);
+            tempColors.push(color);
+            drawBackground(tempColors);
+        });
+
+        // Get color from gradient
+        function getColorFromGradient(position) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 100, 0);
+            gradient.addColorStop(0, 'red');
+            gradient.addColorStop(0.17, 'yellow');
+            gradient.addColorStop(0.34, 'green');
+            gradient.addColorStop(0.51, 'cyan');
+            gradient.addColorStop(0.68, 'blue');
+            gradient.addColorStop(0.85, 'magenta');
+            gradient.addColorStop(1, 'red');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 100, 1);
+            const imageData = ctx.getImageData(0, 0, 100, 1).data;
+            const index = Math.floor(position * 100) * 4;
+            return `rgb(${imageData[index]}, ${imageData[index + 1]}, ${imageData[index + 2]})`;
+        }
+
+        // Confirm color selection
+        function confirmColors() {
+            selectedColors = tempColors;
+            colorPicker.style.display = 'none';
+            confirmButtons.style.display = 'none';
+            drawBackground(selectedColors);
+        }
+
+        // Cancel color selection
+        function cancelColors() {
+            colorPicker.style.display = 'none';
+            confirmButtons.style.display = 'none';
+            drawBackground(selectedColors);
         }
 
         // Initialize the canvases
