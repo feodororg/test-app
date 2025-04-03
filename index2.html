@@ -21,6 +21,13 @@
             border: none;
             padding: 10px 20px;
             cursor: pointer;
+            margin-right: 5px;
+        }
+        .circle-button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            padding: 0;
         }
     </style>
 </head>
@@ -30,7 +37,8 @@
     <div style="position: absolute; top: 10px; left: 10px; z-index: 10;">
         <button onclick="setBrushSize(4)">Small</button>
         <button onclick="setBrushSize(12)">Medium</button>
-        <button onclick="setBrushSize(20)">Large</button>
+        <button class="circle-button" onclick="setBrushSize(20)"></button>
+        <button onclick="saveImage()">Save</button>
     </div>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
@@ -133,6 +141,24 @@
             const touch = event.touches[0];
             draw({ clientX: touch.clientX, clientY: touch.clientY });
         });
+
+        // Save the image from the merged canvases
+        function saveImage() {
+            const mergedCanvas = document.createElement('canvas');
+            const mergedCtx = mergedCanvas.getContext('2d');
+            mergedCanvas.width = backgroundCanvas.width;
+            mergedCanvas.height = backgroundCanvas.height;
+
+            // Draw both canvases onto the merged canvas
+            mergedCtx.drawImage(backgroundCanvas, 0, 0);
+            mergedCtx.drawImage(overlayCanvas, 0, 0);
+
+            // Create the download link
+            const link = document.createElement('a');
+            link.href = mergedCanvas.toDataURL('image/png');
+            link.download = 'canvas-image.png';
+            link.click();
+        }
 
         // Redraw canvases on window resize
         window.addEventListener('resize', resizeCanvases);
