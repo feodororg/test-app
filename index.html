@@ -34,6 +34,20 @@
             border-radius: 50%;
             padding: 0;
         }
+        .refresh-button {
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .refresh-button svg {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -45,6 +59,13 @@
         <button class="circle-button" onclick="setBrushSize(20)"></button>
         <button onclick="changeBackground()">Change Background</button>
         <button onclick="saveImage()">Save</button>
+        <button class="refresh-button" onclick="refreshPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 015.37-4.34L7 2m10 20a9 9 0 01-5.37 4.34L17 22M1 12a11 11 0 0019.5 6.5M23 12a11 11 0 00-19.5-6.5"></path>
+            </svg>
+        </button>
     </div>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
@@ -189,6 +210,11 @@
                     URL.revokeObjectURL(link.href);
                 }
             }, 'image/png');
+        }
+
+        // Refresh the page
+        function refreshPage() {
+            location.reload();
         }
 
         // Redraw canvases on window resize
