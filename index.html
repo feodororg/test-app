@@ -30,13 +30,18 @@
         backgroundCanvas.width = overlayCanvas.width = window.innerWidth;
         backgroundCanvas.height = overlayCanvas.height = window.innerHeight;
 
-        // Create a colorful background on the background canvas
+        // Generate a random color in hexadecimal format
+        function getRandomColor() {
+            return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+        }
+
+        // Create a colorful background with random colors
         const gradient = bgCtx.createLinearGradient(0, 0, backgroundCanvas.width, backgroundCanvas.height);
-        gradient.addColorStop(0, 'red');
-        gradient.addColorStop(0.25, 'orange');
-        gradient.addColorStop(0.5, 'yellow');
-        gradient.addColorStop(0.75, 'green');
-        gradient.addColorStop(1, 'blue');
+        gradient.addColorStop(0, getRandomColor());
+        gradient.addColorStop(0.25, getRandomColor());
+        gradient.addColorStop(0.5, getRandomColor());
+        gradient.addColorStop(0.75, getRandomColor());
+        gradient.addColorStop(1, getRandomColor());
         bgCtx.fillStyle = gradient;
         bgCtx.fillRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
 
