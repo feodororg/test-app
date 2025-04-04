@@ -31,7 +31,7 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
-            margin-right: 5px;
+            margin-right: 0px; /* Уменьшено расстояние между кнопками */
         }
         .small-circle, .medium-circle, .large-circle {
             background-color: white;
@@ -79,7 +79,7 @@
 <body>
     <canvas id="backgroundCanvas"></canvas>
     <canvas id="overlayCanvas"></canvas>
-    <div style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 5px;">
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 0px;">
         <button class="circle-button" onclick="setBrushSize(4)">
             <div class="small-circle"></div>
         </button>
@@ -89,17 +89,17 @@
         <button class="circle-button" onclick="setBrushSize(20)">
             <div class="large-circle"></div>
         </button>
+        <button class="palette-button" onclick="showColorPicker()">
+            <img src="but_1.svg" alt="Palette">
+        </button>
         <button class="palette-button" onclick="changeBackground()">
             <img src="but_2.png" alt="Change">
         </button>
         <button class="refresh-button" onclick="refreshPage()">
-            <img src="but_1.svg" alt="Refresh">
+            <img src="but_3.svg" alt="Refresh">
         </button>
         <button class="save-button" onclick="saveImage()">
             <img src="but_4.svg" alt="Save">
-        </button>
-        <button class="palette-button" onclick="showColorPicker()">
-            <img src="pict1-01.svg" alt="Palette">
         </button>
     </div>
     <div class="color-gradient-line" id="colorGradientLine" onclick="selectColorFromGradient(event)"></div>
@@ -203,7 +203,8 @@
         // Select a color for the gradient
         function selectColor(color) {
             tempColors.push(color);
-            drawBackground(tempColors);
+            selectedColors.push(color);
+            drawBackground(selectedColors);
         }
 
         // Select a color from the gradient line
