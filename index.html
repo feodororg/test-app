@@ -68,7 +68,7 @@
             left: 0;
             width: 40px;
             height: 60%;
-            background: linear-gradient(to bottom, yellow 30px, yellow, cyan, cyan 20px); /* Развернутый градиент */
+            background: linear-gradient(to bottom, yellow 20px, yellow, cyan, cyan 30px); /* Градиентная полоса */
             display: none;
         }
         .close-button {
@@ -231,9 +231,22 @@
             const rect = colorGradientLine.getBoundingClientRect();
             const y = event.clientY - rect.top;
             const gradientHeight = rect.height;
-            const colors = ['yellow', 'yellow', 'cyan', 'cyan']; // Adjusted colors
-            const colorIndex = Math.floor((y / gradientHeight) * (colors.length - 2)) + 1; // Adjusted index calculation
-            selectColor(colors[colorIndex]);
+            const colorIndex = Math.floor((y / gradientHeight) * 100); // Скорректированный индекс
+            const colors = ['yellow', 'yellow', 'cyan', 'cyan']; // Скорректированные цвета
+            const totalHeight = gradientHeight - 50; // Общее количество пикселей градиента
+            let selectedColor;
+            if (y < 20) {
+                selectedColor = 'yellow';
+            } else if (y > totalHeight) {
+                selectedColor = 'cyan';
+            } else {
+                const gradientPosition = (y - 20) / totalHeight;
+                const r = Math.floor(255 * (1 - gradientPosition));
+                const g = Math.floor(255 * gradientPosition);
+                const b = Math.floor(255 * gradientPosition);
+                selectedColor = `rgb(${r}, ${g}, ${b})`;
+            }
+            selectColor(selectedColor);
         }
 
         // Initialize the canvases
