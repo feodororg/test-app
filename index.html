@@ -62,27 +62,17 @@
             width: 60px; /* Увеличена картинка на кнопке save */
             height: 60px;
         }
-
-        
         .color-stripe {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 40px;
-            height: 70%;
-           background:  linear-gradient(to bottom, 
-                                    
-                                     yellow 20px,  yellow, 
-                                        orange, 
-                                       red, 
-            
-                                       blue, 
-                                        cyan, 
-                                       green
-                                    
-                                       
-       
-        );
+            height: 60%;
+            background: linear-gradient(to bottom, 
+                yellow 20px, 
+                yellow calc(20px + 100%), 
+                cyan calc(100% - 30px), 
+                cyan 100%);
             display: none;
         }
         .close-button {
@@ -244,16 +234,18 @@
         function selectColorFromStripe(event) {
             const rect = colorStripe.getBoundingClientRect();
             const y = event.clientY - rect.top;
-            const gradientHeight = rect.height - 50; // Adjusted height for the cyan and yellow sections
+            const stripeHeight = rect.height;
             let selectedColor;
+
             if (y < 20) {
-                selectedColor = 'cyan';
-            } else if (y > gradientHeight) {
                 selectedColor = 'yellow';
+            } else if (y > stripeHeight - 30) {
+                selectedColor = 'cyan';
             } else {
-                const gradientPosition = (y - 20) / gradientHeight;
-                selectedColor = `rgb(${Math.floor(255 * gradientPosition)}, 255, ${Math.floor(255 * (1 - gradientPosition))})`;
+                const gradientPosition = (y - 20) / (stripeHeight - 50);
+                selectedColor = `rgb(${255 * (1 - gradientPosition)}, ${255 * gradientPosition}, 255)`;
             }
+
             selectColor(selectedColor);
         }
 
