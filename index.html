@@ -51,6 +51,19 @@
             border-radius: 50%;
             background-color: white;
         }
+        .palette-button {
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .palette-button img {
+            width: 30px;
+            height: 30px;
+        }
         button {
             background-color: white;
             color: black;
@@ -90,15 +103,19 @@
         }
         .close-button {
             position: absolute;
-            top: 60%;
+            top: calc(50% + 40px);
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             background-color: white;
             color: black;
             border: none;
             cursor: pointer;
             display: none;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
@@ -116,6 +133,9 @@
             <div class="large-circle"></div>
         </button>
         <button onclick="changeBackground()">CHANGE</button>
+        <button class="palette-button" onclick="showColorPicker()">
+            <img src="palette-icon.png" alt="Palette">
+        </button>
         <button class="refresh-button" onclick="refreshPage()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="23 4 23 10 17 10"></polyline>
@@ -123,8 +143,7 @@
                 <path d="M3.51 9a9 9 0 015.37-4.34L7 2m10 20a9 9 0 01-5.37 4.34L17 22M1 12a11 11 0 0019.5 6.5M23 12a11 11 0 00-19.5-6.5"></path>
             </svg>
         </button>
-        <button onclick="showColorPicker()">🎨</button>
-        <button onclick="saveImage()">Save</button>
+        <button onclick="saveImage()">SAVE</button>
     </div>
     <div class="color-circles" id="colorCircles">
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -192,7 +211,7 @@
         // Show the color picker
         function showColorPicker() {
             colorCircles.style.display = 'flex';
-            closeButton.style.display = 'block';
+            closeButton.style.display = 'flex';
             tempColors = [];
         }
 
