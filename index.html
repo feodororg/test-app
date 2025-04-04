@@ -68,7 +68,7 @@
             left: 0;
             width: 40px;
             height: 60%;
-            background: linear-gradient(to bottom, cyan, blue, magenta, purple, red, orange, yellow); /* Развернутый градиент */
+            background: linear-gradient(to bottom, yellow 20px, cyan, blue, magenta, purple, red, orange, yellow, cyan 30px); /* Развернутый градиент */
             display: none;
         }
         .close-button {
@@ -231,8 +231,8 @@
             const rect = colorGradientLine.getBoundingClientRect();
             const y = event.clientY - rect.top;
             const gradientHeight = rect.height;
-            const colorIndex = Math.floor((y / gradientHeight) * 11); // 11 colors in gradient
-            const colors = ['cyan', 'blue', 'magenta', 'purple', 'red', 'orange', 'yellow'];
+            const colors = ['yellow', 'cyan', 'blue', 'magenta', 'purple', 'red', 'orange', 'yellow', 'cyan']; // Adjusted colors
+            const colorIndex = Math.floor((y / gradientHeight) * (colors.length - 2)) + 1; // Adjusted index calculation
             selectColor(colors[colorIndex]);
         }
 
