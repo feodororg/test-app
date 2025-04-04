@@ -34,8 +34,9 @@
             margin-right: 7px; /* Уменьшено расстояние между кнопками на 3 пикселя */
         }
         .save-button {
-            width: 60px; /* Увеличена кнопка save */
-            height: 60px;
+            width: 65px; /* Увеличена кнопка save */
+            height: 65px;
+            align-self: flex-start; /* Выровнена по верху */
         }
         .small-circle, .medium-circle, .large-circle {
             background-color: white;
@@ -58,8 +59,8 @@
             height: 40px;
         }
         .save-button img {
-            width: 50px; /* Увеличена картинка на кнопке save */
-            height: 50px;
+            width: 55px; /* Увеличена картинка на кнопке save */
+            height: 55px;
         }
         .color-gradient-line {
             position: absolute;
@@ -67,7 +68,7 @@
             left: 0;
             width: 40px;
             height: 60%;
-            background: linear-gradient(to top, red, yellow, green, cyan, blue, magenta, orange, purple, pink, brown, white);
+            background: linear-gradient(to bottom, cyan, blue, magenta, purple, red, orange, yellow); /* Развернутый градиент */
             display: none;
         }
         .close-button {
@@ -97,7 +98,7 @@
         <button class="circle-button" onclick="setBrushSize(20)">
             <div class="large-circle"></div>
         </button>
-        <button class="palette-button" onclick="showColorPicker()">
+        <button class="palette-button" onclick="toggleColorPicker()">
             <img src="but_1.svg" alt="Palette">
         </button>
         <button class="palette-button" onclick="changeBackground()">
@@ -147,6 +148,7 @@
         let selectedColors = [];
         let tempColors = [];
         let currentAngle = getRandomAngle();
+        let colorPickerVisible = false;
 
         // Resize canvases to fill the window
         function resizeCanvases() {
@@ -190,19 +192,28 @@
         // Change the background to a new random gradient with a random angle
         function changeBackground() {
             currentAngle = getRandomAngle();
-            drawBackground();
+            const numColors = Math.floor(Math.random() * 4) + 3; // Random number between 3 and 6
+            selectedColors = Array.from({ length: numColors }, () => getRandomColor());
+            drawBackground(selectedColors);
         }
 
-        // Show the color picker
-        function showColorPicker() {
-            colorCircles.style.display = 'flex';
-            colorGradientLine.style.display = 'block';
-            closeButton.style.display = 'flex';
-            tempColors = [];
+        // Toggle the color picker visibility
+        function toggleColorPicker() {
+            colorPickerVisible = !colorPickerVisible;
+            if (colorPickerVisible) {
+                colorCircles.style.display = 'flex';
+                colorGradientLine.style.display = 'block';
+                closeButton.style.display = 'flex';
+            } else {
+                colorCircles.style.display = 'none';
+                colorGradientLine.style.display = 'none';
+                closeButton.style.display = 'none';
+            }
         }
 
         // Hide the color picker
         function hideColorPicker() {
+            colorPickerVisible = false;
             colorCircles.style.display = 'none';
             colorGradientLine.style.display = 'none';
             closeButton.style.display = 'none';
@@ -221,7 +232,7 @@
             const y = event.clientY - rect.top;
             const gradientHeight = rect.height;
             const colorIndex = Math.floor((y / gradientHeight) * 11); // 11 colors in gradient
-            const colors = ['red', 'yellow', 'green', 'cyan', 'blue', 'magenta', 'orange', 'purple', 'pink', 'brown', 'white'];
+            const colors = ['cyan', 'blue', 'magenta', 'purple', 'red', 'orange', 'yellow'];
             selectColor(colors[colorIndex]);
         }
 
