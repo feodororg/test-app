@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
     <title>Drawing App</title>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#000000">
@@ -13,6 +13,8 @@
         body {
             margin: 0;
             overflow: hidden;
+            /* Запрет на поворот экрана */
+            transform: rotate(0deg);
         }
         canvas {
             display: block;
@@ -89,10 +91,10 @@
         .color-circles {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            left: 10px;
+            transform: translateY(-50%);
             display: none;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 10px;
         }
         .color-circle {
@@ -103,9 +105,8 @@
         }
         .close-button {
             position: absolute;
-            top: calc(50% + 120px); /* 60 пикселей ниже */
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: calc(50% + 60px); /* смещено на 60 пикселей ниже */
+            left: 10px;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -140,6 +141,7 @@
         <button class="refresh-button" onclick="refreshPage()">
             <img src="pict1-02.svg" alt="Refresh">
         </button>
+        <button onclick="randomizeGradient()">RANDOM GRADIENT</button> <!-- Кнопка для рандомной смены угла и стиля градиента -->
     </div>
     <div class="color-circles" id="colorCircles">
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -180,6 +182,11 @@
             return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
         }
 
+        // Generate a random angle in degrees
+        function getRandomAngle() {
+            return Math.floor(Math.random() * 360);
+        }
+
         // Create a colorful background with random colors
         function drawBackground(colors = selectedColors) {
             const gradient = bgCtx.createLinearGradient(0, 0, backgroundCanvas.width, backgroundCanvas.height);
@@ -201,6 +208,13 @@
 
         // Change the background to a new random gradient
         function changeBackground() {
+            drawBackground();
+        }
+
+        // Randomize the gradient angle and style
+        function randomizeGradient() {
+            const angle = getRandomAngle();
+            backgroundCanvas.style.transform = `rotate(${angle}deg)`;
             drawBackground();
         }
 
