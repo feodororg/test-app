@@ -52,8 +52,8 @@
             background-color: white;
         }
         button {
-            background-color: blue;
-            color: white;
+            background-color: white;
+            color: black;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
@@ -61,8 +61,8 @@
         }
         .refresh-button {
             padding: 10px;
-            background-color: blue;
-            color: white;
+            background-color: white;
+            color: black;
             border: none;
             cursor: pointer;
             display: inline-flex;
@@ -88,6 +88,18 @@
             border-radius: 50%;
             cursor: pointer;
         }
+        .close-button {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -103,7 +115,7 @@
         <button class="circle-button" onclick="setBrushSize(20)">
             <div class="large-circle"></div>
         </button>
-        <button onclick="changeBackground()">Change Background</button>
+        <button onclick="changeBackground()">CHANGE</button>
         <button class="refresh-button" onclick="refreshPage()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="23 4 23 10 17 10"></polyline>
@@ -112,6 +124,7 @@
             </svg>
         </button>
         <button onclick="showColorPicker()">🎨</button>
+        <button onclick="saveImage()">Save</button>
     </div>
     <div class="color-circles" id="colorCircles">
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -127,12 +140,14 @@
         <div class="color-circle" style="background-color: black;" onclick="selectColor('black')"></div>
         <div class="color-circle" style="background-color: white;" onclick="selectColor('white')"></div>
     </div>
+    <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
         const overlayCanvas = document.getElementById('overlayCanvas');
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
         const colorCircles = document.getElementById('colorCircles');
+        const closeButton = document.getElementById('closeButton');
         let selectedColors = [];
         let tempColors = [];
 
@@ -177,26 +192,20 @@
         // Show the color picker
         function showColorPicker() {
             colorCircles.style.display = 'flex';
+            closeButton.style.display = 'block';
             tempColors = [];
+        }
+
+        // Hide the color picker
+        function hideColorPicker() {
+            colorCircles.style.display = 'none';
+            closeButton.style.display = 'none';
         }
 
         // Select a color for the gradient
         function selectColor(color) {
             tempColors.push(color);
             drawBackground(tempColors);
-        }
-
-        // Confirm color selection
-        function confirmColors() {
-            selectedColors = tempColors;
-            colorCircles.style.display = 'none';
-            drawBackground(selectedColors);
-        }
-
-        // Cancel color selection
-        function cancelColors() {
-            colorCircles.style.display = 'none';
-            drawBackground(selectedColors);
         }
 
         // Initialize the canvases
