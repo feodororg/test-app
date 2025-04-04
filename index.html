@@ -21,8 +21,8 @@
             left: 0;
         }
         .circle-button {
-            width: 20px;
-            height: 20px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             padding: 0;
             margin-right: 5px;
@@ -30,14 +30,14 @@
             align-items: center;
             justify-content: center;
             background-color: transparent;
-            border: 1px solid blue;
+            border: none;
             cursor: pointer;
         }
         .small-circle {
-            width: 4px;
-            height: 4px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background-color: blue;
+            background-color: white;
         }
         button {
             background-color: blue;
@@ -75,15 +75,6 @@
             height: 30px;
             cursor: pointer;
         }
-        .confirm-buttons {
-            display: none;
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            gap: 10px;
-        }
     </style>
 </head>
 <body>
@@ -104,6 +95,10 @@
             </svg>
         </button>
         <button onclick="showColorPicker()">🎨</button>
+        <div class="confirm-buttons" id="confirmButtons" style="margin-top: 10px;">
+            <button onclick="confirmColors()">✔️</button>
+            <button onclick="cancelColors()">❌</button>
+        </div>
     </div>
     <div class="color-squares" id="colorSquares">
         <div class="color-square" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -118,10 +113,6 @@
         <div class="color-square" style="background-color: brown;" onclick="selectColor('brown')"></div>
         <div class="color-square" style="background-color: black;" onclick="selectColor('black')"></div>
         <div class="color-square" style="background-color: white;" onclick="selectColor('white')"></div>
-    </div>
-    <div class="confirm-buttons" id="confirmButtons">
-        <button onclick="confirmColors()">✔️</button>
-        <button onclick="cancelColors()">❌</button>
     </div>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
