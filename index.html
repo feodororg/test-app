@@ -88,7 +88,7 @@
         }
         .color-circles {
             position: absolute;
-            bottom: 10px; /* Выровнено по нижнему левому углу */
+            bottom: 10px; /* Отступ снизу 10 пикселей */
             left: 10px;
             display: none;
             flex-direction: column;
@@ -101,9 +101,6 @@
             cursor: pointer;
         }
         .close-button {
-            position: absolute;
-            bottom: 70px; /* смещено на 60 пикселей выше */
-            left: 10px;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -189,17 +186,9 @@
             return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
         }
 
-        // Generate a random angle in degrees
-        function getRandomAngle() {
-            return Math.floor(Math.random() * 360);
-        }
-
         // Create a colorful background with random colors
         function drawBackground(colors = selectedColors) {
-            const angle = getRandomAngle(); // получаем случайный угол
-            const x = backgroundCanvas.width * Math.cos(angle * Math.PI / 180);
-            const y = backgroundCanvas.height * Math.sin(angle * Math.PI / 180);
-            const gradient = bgCtx.createLinearGradient(0, 0, x, y);
+            const gradient = bgCtx.createLinearGradient(0, 0, backgroundCanvas.width, backgroundCanvas.height);
             if (colors.length === 0) {
                 gradient.addColorStop(0, getRandomColor());
                 gradient.addColorStop(0.25, getRandomColor());
