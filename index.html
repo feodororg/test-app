@@ -88,7 +88,7 @@
         }
         .color-circles {
             position: absolute;
-            bottom: 10px; /* Отступ снизу 10 пикселей */
+            bottom: 15px; /* Отступ снизу 15 пикселей */
             left: 10px;
             display: none;
             flex-direction: column;
@@ -127,7 +127,9 @@
         <button class="circle-button" onclick="setBrushSize(20)">
             <div class="large-circle"></div>
         </button>
-        <button onclick="changeBackground()">CHANGE</button>
+        <button class="palette-button" onclick="changeBackground()">
+            <img src="but_2.png" alt="Change" style="width: 20px; height: 20px;">
+        </button>
         <button onclick="saveImage()">SAVE</button>
         <button class="palette-button" onclick="showColorPicker()">
             <img src="pict1-01.svg" alt="Palette">
@@ -196,7 +198,7 @@
             const x = backgroundCanvas.width * Math.cos(currentAngle * Math.PI / 180);
             const y = backgroundCanvas.height * Math.sin(currentAngle * Math.PI / 180);
             const gradient = bgCtx.createLinearGradient(0, 0, x, y);
-            if (colors.length < 2) {
+            if (colors.length < 3) {
                 gradient.addColorStop(0, getRandomColor());
                 gradient.addColorStop(0.5, getRandomColor());
                 gradient.addColorStop(1, getRandomColor());
