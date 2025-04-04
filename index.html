@@ -52,7 +52,7 @@
             background-color: white;
         }
         .palette-button {
-            background-color: white;
+            background-color: transparent; /* Убран белый фон */
             border: none;
             cursor: pointer;
             margin-right: 5px;
@@ -61,8 +61,8 @@
             justify-content: center;
         }
         .palette-button img {
-            width: 25px;
-            height: 25px;
+            width: 50px; /* Размер изображения 50 пикселей */
+            height: 50px;
         }
         button {
             background-color: white;
@@ -86,19 +86,14 @@
             width: 25px;
             height: 25px;
         }
-        .color-circles {
+        .color-gradient-line {
             position: absolute;
             bottom: 15px; /* Отступ снизу 15 пикселей */
-            left: 10px;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .color-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
+            left: 0;
+            width: 50%; /* Длина линии 50% экрана */
+            height: 40px; /* Ширина линии 40 пикселей */
+            background: linear-gradient(to right, red, yellow, green, cyan, blue, magenta, orange, purple, pink, brown, white); /* Пример градиента */
+            border-radius: 20px; /* Сглаживание краев */
         }
         .close-button {
             width: 40px;
@@ -128,7 +123,7 @@
             <div class="large-circle"></div>
         </button>
         <button class="palette-button" onclick="changeBackground()">
-            <img src="but_2.png" alt="Change" style="width: 20px; height: 20px;">
+            <img src="but_2.png" alt="Change">
         </button>
         <button onclick="saveImage()">SAVE</button>
         <button class="palette-button" onclick="showColorPicker()">
@@ -138,6 +133,7 @@
             <img src="pict1-02.svg" alt="Refresh">
         </button>
     </div>
+    <div class="color-gradient-line" id="colorGradientLine"></div>
     <div class="color-circles" id="colorCircles">
         <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
