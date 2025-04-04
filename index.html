@@ -61,14 +61,14 @@
             justify-content: center;
         }
         .palette-button img {
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
         }
         button {
             background-color: white;
             color: black;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 20px; /* увеличено сверху и снизу на 5 пикселей */
             cursor: pointer;
             margin-right: 5px;
         }
@@ -83,8 +83,8 @@
             justify-content: center;
         }
         .refresh-button img {
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
         }
         .color-circles {
             position: absolute;
@@ -154,8 +154,8 @@
         <div class="color-circle" style="background-color: brown;" onclick="selectColor('brown')"></div>
         <div class="color-circle" style="background-color: black;" onclick="selectColor('black')"></div>
         <div class="color-circle" style="background-color: white;" onclick="selectColor('white')"></div>
+        <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
     </div>
-    <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
         const overlayCanvas = document.getElementById('overlayCanvas');
