@@ -39,6 +39,18 @@
             border-radius: 50%;
             background-color: white;
         }
+        .medium-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .large-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+        }
         button {
             background-color: blue;
             color: white;
@@ -61,18 +73,19 @@
             width: 20px;
             height: 20px;
         }
-        .color-squares {
+        .color-circles {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             display: none;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 10px;
         }
-        .color-square {
-            width: 30px;
-            height: 30px;
+        .color-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             cursor: pointer;
         }
     </style>
@@ -84,8 +97,12 @@
         <button class="circle-button" onclick="setBrushSize(4)">
             <div class="small-circle"></div>
         </button>
-        <button onclick="setBrushSize(12)">Medium</button>
-        <button class="circle-button" onclick="setBrushSize(20)"></button>
+        <button class="circle-button" onclick="setBrushSize(12)">
+            <div class="medium-circle"></div>
+        </button>
+        <button class="circle-button" onclick="setBrushSize(20)">
+            <div class="large-circle"></div>
+        </button>
         <button onclick="changeBackground()">Change Background</button>
         <button class="refresh-button" onclick="refreshPage()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -95,32 +112,27 @@
             </svg>
         </button>
         <button onclick="showColorPicker()">🎨</button>
-        <div class="confirm-buttons" id="confirmButtons" style="margin-top: 10px;">
-            <button onclick="confirmColors()">✔️</button>
-            <button onclick="cancelColors()">❌</button>
-        </div>
     </div>
-    <div class="color-squares" id="colorSquares">
-        <div class="color-square" style="background-color: red;" onclick="selectColor('red')"></div>
-        <div class="color-square" style="background-color: yellow;" onclick="selectColor('yellow')"></div>
-        <div class="color-square" style="background-color: green;" onclick="selectColor('green')"></div>
-        <div class="color-square" style="background-color: cyan;" onclick="selectColor('cyan')"></div>
-        <div class="color-square" style="background-color: blue;" onclick="selectColor('blue')"></div>
-        <div class="color-square" style="background-color: magenta;" onclick="selectColor('magenta')"></div>
-        <div class="color-square" style="background-color: orange;" onclick="selectColor('orange')"></div>
-        <div class="color-square" style="background-color: purple;" onclick="selectColor('purple')"></div>
-        <div class="color-square" style="background-color: pink;" onclick="selectColor('pink')"></div>
-        <div class="color-square" style="background-color: brown;" onclick="selectColor('brown')"></div>
-        <div class="color-square" style="background-color: black;" onclick="selectColor('black')"></div>
-        <div class="color-square" style="background-color: white;" onclick="selectColor('white')"></div>
+    <div class="color-circles" id="colorCircles">
+        <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
+        <div class="color-circle" style="background-color: yellow;" onclick="selectColor('yellow')"></div>
+        <div class="color-circle" style="background-color: green;" onclick="selectColor('green')"></div>
+        <div class="color-circle" style="background-color: cyan;" onclick="selectColor('cyan')"></div>
+        <div class="color-circle" style="background-color: blue;" onclick="selectColor('blue')"></div>
+        <div class="color-circle" style="background-color: magenta;" onclick="selectColor('magenta')"></div>
+        <div class="color-circle" style="background-color: orange;" onclick="selectColor('orange')"></div>
+        <div class="color-circle" style="background-color: purple;" onclick="selectColor('purple')"></div>
+        <div class="color-circle" style="background-color: pink;" onclick="selectColor('pink')"></div>
+        <div class="color-circle" style="background-color: brown;" onclick="selectColor('brown')"></div>
+        <div class="color-circle" style="background-color: black;" onclick="selectColor('black')"></div>
+        <div class="color-circle" style="background-color: white;" onclick="selectColor('white')"></div>
     </div>
     <script>
         const backgroundCanvas = document.getElementById('backgroundCanvas');
         const overlayCanvas = document.getElementById('overlayCanvas');
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
-        const colorSquares = document.getElementById('colorSquares');
-        const confirmButtons = document.getElementById('confirmButtons');
+        const colorCircles = document.getElementById('colorCircles');
         let selectedColors = [];
         let tempColors = [];
 
@@ -164,8 +176,7 @@
 
         // Show the color picker
         function showColorPicker() {
-            colorSquares.style.display = 'flex';
-            confirmButtons.style.display = 'none';
+            colorCircles.style.display = 'flex';
             tempColors = [];
         }
 
@@ -173,21 +184,18 @@
         function selectColor(color) {
             tempColors.push(color);
             drawBackground(tempColors);
-            confirmButtons.style.display = 'flex';
         }
 
         // Confirm color selection
         function confirmColors() {
             selectedColors = tempColors;
-            colorSquares.style.display = 'none';
-            confirmButtons.style.display = 'none';
+            colorCircles.style.display = 'none';
             drawBackground(selectedColors);
         }
 
         // Cancel color selection
         function cancelColors() {
-            colorSquares.style.display = 'none';
-            confirmButtons.style.display = 'none';
+            colorCircles.style.display = 'none';
             drawBackground(selectedColors);
         }
 
