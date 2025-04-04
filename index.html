@@ -62,6 +62,15 @@
             width: 60px; /* Увеличена картинка на кнопке save */
             height: 60px;
         }
+        .color-stripe {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 60%;
+            background: linear-gradient(to bottom, cyan 20px, cyan, yellow, yellow 30px); /* Градиентная полоса */
+            display: none;
+        }
         .close-button {
             width: 40px;
             height: 40px;
@@ -102,6 +111,7 @@
             <img src="but_4.svg" alt="Save">
         </button>
     </div>
+    <div class="color-stripe" id="colorStripe" onclick="selectColorFromStripe(event)"></div>
     <div class="color-circles" id="colorCircles">
         <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -133,6 +143,7 @@
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
         const colorCircles = document.getElementById('colorCircles');
+        const colorStripe = document.getElementById('colorStripe');
         const closeButton = document.getElementById('closeButton');
         let selectedColors = [];
         let tempColors = [];
@@ -191,9 +202,11 @@
             colorPickerVisible = !colorPickerVisible;
             if (colorPickerVisible) {
                 colorCircles.style.display = 'flex';
+                colorStripe.style.display = 'block';
                 closeButton.style.display = 'flex';
             } else {
                 colorCircles.style.display = 'none';
+                colorStripe.style.display = 'none';
                 closeButton.style.display = 'none';
             }
         }
@@ -202,6 +215,7 @@
         function hideColorPicker() {
             colorPickerVisible = false;
             colorCircles.style.display = 'none';
+            colorStripe.style.display = 'none';
             closeButton.style.display = 'none';
         }
 
@@ -210,6 +224,23 @@
             tempColors.push(color);
             selectedColors.push(color);
             drawBackground(selectedColors);
+        }
+
+        // Select a color from the color stripe
+        function selectColorFromStripe(event) {
+            const rect = colorStripe.getBoundingClientRect();
+            const y = event.clientY - rect.top;
+            const gradientHeight = rect.height - 50; // Adjusted height for the cyan and yellow sections
+            let selectedColor;
+            if (y < 20) {
+                selectedColor = 'cyan';
+            } else if (y > gradientHeight) {
+                selectedColor = 'yellow';
+            } else {
+                const gradientPosition = (y - 20) / gradientHeight;
+                selectedColor = `rgb(${Math.floor(255 * gradientPosition)}, 255, ${Math.floor(255 * (1 - gradientPosition))})`;
+            }
+            selectColor(selectedColor);
         }
 
         // Initialize the canvases
