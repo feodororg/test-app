@@ -34,8 +34,8 @@
             margin-right: 7px; /* Уменьшено расстояние между кнопками на 3 пикселя */
         }
         .save-button {
-            width: 65px; /* Увеличена кнопка save */
-            height: 65px;
+            width: 70px; /* Увеличена кнопка save */
+            height: 70px;
             align-self: flex-start; /* Выровнена по верху */
         }
         .small-circle, .medium-circle, .large-circle {
@@ -59,8 +59,8 @@
             height: 40px;
         }
         .save-button img {
-            width: 55px; /* Увеличена картинка на кнопке save */
-            height: 55px;
+            width: 60px; /* Увеличена картинка на кнопке save */
+            height: 60px;
         }
         .color-gradient-line {
             position: absolute;
@@ -68,7 +68,7 @@
             left: 0;
             width: 40px;
             height: 60%;
-            background: linear-gradient(to bottom, yellow 20px, cyan, blue, magenta, purple, red, orange, yellow, cyan 30px); /* Развернутый градиент */
+            background: linear-gradient(to bottom, yellow 30px, yellow, cyan, cyan 20px); /* Развернутый градиент */
             display: none;
         }
         .close-button {
@@ -231,7 +231,7 @@
             const rect = colorGradientLine.getBoundingClientRect();
             const y = event.clientY - rect.top;
             const gradientHeight = rect.height;
-            const colors = ['yellow', 'cyan', 'blue', 'magenta', 'purple', 'red', 'orange', 'yellow', 'cyan']; // Adjusted colors
+            const colors = ['yellow', 'yellow', 'cyan', 'cyan']; // Adjusted colors
             const colorIndex = Math.floor((y / gradientHeight) * (colors.length - 2)) + 1; // Adjusted index calculation
             selectColor(colors[colorIndex]);
         }
