@@ -52,7 +52,7 @@
             background-color: white;
         }
         .palette-button {
-            background-color: transparent; /* Убран белый фон */
+            background-color: transparent;
             border: none;
             cursor: pointer;
             margin-right: 5px;
@@ -61,21 +61,20 @@
             justify-content: center;
         }
         .palette-button img {
-            width: 50px; /* Размер изображения 50 пикселей */
-            height: 50px;
+            width: 40px;
+            height: 40px;
         }
         button {
             background-color: white;
             color: black;
             border: none;
-            padding: 15px 20px; /* увеличено сверху и снизу на 5 пикселей */
+            padding: 15px 20px;
             cursor: pointer;
             margin-right: 5px;
         }
         .refresh-button {
             padding: 10px;
-            background-color: white;
-            color: black;
+            background-color: transparent;
             border: none;
             cursor: pointer;
             display: inline-flex;
@@ -83,17 +82,17 @@
             justify-content: center;
         }
         .refresh-button img {
-            width: 25px;
-            height: 25px;
+            width: 40px;
+            height: 40px;
         }
         .color-gradient-line {
             position: absolute;
-            bottom: 15px; /* Отступ снизу 15 пикселей */
+            bottom: 0;
             left: 0;
-            width: 50%; /* Длина линии 50% экрана */
-            height: 40px; /* Ширина линии 40 пикселей */
-            background: linear-gradient(to right, red, yellow, green, cyan, blue, magenta, orange, purple, pink, brown, white); /* Пример градиента */
-            border-radius: 20px; /* Сглаживание краев */
+            width: 40px;
+            height: 60%; /* Высота линии 60% экрана */
+            background: linear-gradient(to top, red, yellow, green, cyan, blue, magenta, orange, purple, pink, brown, white); /* Пример градиента */
+            display: none; /* Скрыта по умолчанию */
         }
         .close-button {
             width: 40px;
@@ -122,15 +121,15 @@
         <button class="circle-button" onclick="setBrushSize(20)">
             <div class="large-circle"></div>
         </button>
-        <button class="palette-button" onclick="changeBackground()">
+        <button class="palette-button" onclick="changeBackground()" style="margin-left: calc(50% - 20px);">
             <img src="but_2.png" alt="Change">
+        </button>
+        <button class="refresh-button" onclick="refreshPage()">
+            <img src="but_3.svg" alt="Refresh">
         </button>
         <button onclick="saveImage()">SAVE</button>
         <button class="palette-button" onclick="showColorPicker()">
             <img src="pict1-01.svg" alt="Palette">
-        </button>
-        <button class="refresh-button" onclick="refreshPage()">
-            <img src="pict1-02.svg" alt="Refresh">
         </button>
     </div>
     <div class="color-gradient-line" id="colorGradientLine"></div>
@@ -165,6 +164,7 @@
         const bgCtx = backgroundCanvas.getContext('2d');
         const overlayCtx = overlayCanvas.getContext('2d');
         const colorCircles = document.getElementById('colorCircles');
+        const colorGradientLine = document.getElementById('colorGradientLine');
         const closeButton = document.getElementById('closeButton');
         let selectedColors = [];
         let tempColors = [];
@@ -194,10 +194,11 @@
             const x = backgroundCanvas.width * Math.cos(currentAngle * Math.PI / 180);
             const y = backgroundCanvas.height * Math.sin(currentAngle * Math.PI / 180);
             const gradient = bgCtx.createLinearGradient(0, 0, x, y);
+            const colorCount = colors.length < 3 ? 3 : colors.length;
             if (colors.length < 3) {
-                gradient.addColorStop(0, getRandomColor());
-                gradient.addColorStop(0.5, getRandomColor());
-                gradient.addColorStop(1, getRandomColor());
+                for (let i = 0; i < colorCount; i++) {
+                    gradient.addColorStop(i / (colorCount - 1), getRandomColor());
+                }
             } else {
                 const step = 1 / (colors.length - 1);
                 colors.forEach((color, index) => {
@@ -217,6 +218,7 @@
         // Show the color picker
         function showColorPicker() {
             colorCircles.style.display = 'flex';
+            colorGradientLine.style.display = 'block';
             closeButton.style.display = 'flex';
             tempColors = [];
         }
@@ -224,6 +226,7 @@
         // Hide the color picker
         function hideColorPicker() {
             colorCircles.style.display = 'none';
+            colorGradientLine.style.display = 'none';
             closeButton.style.display = 'none';
         }
 
