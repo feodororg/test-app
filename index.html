@@ -88,11 +88,19 @@
             width: 25px;
             height: 25px;
         }
+        .triangle-button {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid white;
+            cursor: pointer;
+            margin-right: 5px;
+        }
         .color-circles {
             position: absolute;
-            top: 50%;
+            top: 70px; /* Под кнопками меню */
             left: 10px;
-            transform: translateY(-50%);
             display: none;
             flex-direction: column;
             gap: 10px;
@@ -105,7 +113,7 @@
         }
         .close-button {
             position: absolute;
-            top: calc(50% + 60px); /* смещено на 60 пикселей ниже */
+            top: calc(70px + 60px); /* смещено на 60 пикселей ниже */
             left: 10px;
             width: 40px;
             height: 40px;
@@ -141,7 +149,7 @@
         <button class="refresh-button" onclick="refreshPage()">
             <img src="pict1-02.svg" alt="Refresh">
         </button>
-        <button onclick="randomizeGradient()">RANDOM GRADIENT</button> <!-- Кнопка для рандомной смены угла и стиля градиента -->
+        <button class="triangle-button" onclick="randomizeGradient()"></button> <!-- Треугольная кнопка для рандомной смены угла градиента -->
     </div>
     <div class="color-circles" id="colorCircles">
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -170,8 +178,8 @@
 
         // Resize canvases to fill the window
         function resizeCanvases() {
-            backgroundCanvas.width = overlayCanvas.width = window.innerWidth;
-            backgroundCanvas.height = overlayCanvas.height = window.innerHeight;
+            backgroundCanvas.width = overlayCanvas.width = window.innerWidth * 1.5; // увеличиваем размер фона
+            backgroundCanvas.height = overlayCanvas.height = window.innerHeight * 1.5; // увеличиваем размер фона
 
             // Redraw the background gradient after resizing
             drawBackground();
