@@ -13,8 +13,6 @@
         body {
             margin: 0;
             overflow: hidden;
-            /* Запрет на поворот экрана */
-            transform: rotate(0deg);
         }
         canvas {
             display: block;
@@ -88,15 +86,6 @@
             width: 25px;
             height: 25px;
         }
-        .triangle-button {
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 35px solid white;
-            cursor: pointer;
-            margin-right: 5px;
-        }
         .color-circles {
             position: absolute;
             top: 70px; /* Под кнопками меню */
@@ -149,7 +138,6 @@
         <button class="refresh-button" onclick="refreshPage()">
             <img src="pict1-02.svg" alt="Refresh">
         </button>
-        <button class="triangle-button" onclick="randomizeGradient()"></button> <!-- Треугольная кнопка для рандомной смены угла градиента -->
     </div>
     <div class="color-circles" id="colorCircles">
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -167,6 +155,17 @@
         <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
     </div>
     <script>
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(function(error) {
+                console.error('Orientation lock failed: ', error);
+            });
+        } else if (screen.lockOrientation) {
+            // For older APIs
+            screen.lockOrientation('portrait').catch(function(error) {
+                console.error('Orientation lock failed: ', error);
+            });
+        }
+
         const backgroundCanvas = document.getElementById('backgroundCanvas');
         const overlayCanvas = document.getElementById('overlayCanvas');
         const bgCtx = backgroundCanvas.getContext('2d');
@@ -178,8 +177,8 @@
 
         // Resize canvases to fill the window
         function resizeCanvases() {
-            backgroundCanvas.width = overlayCanvas.width = window.innerWidth * 1.5; // увеличиваем размер фона
-            backgroundCanvas.height = overlayCanvas.height = window.innerHeight * 1.5; // увеличиваем размер фона
+            backgroundCanvas.width = overlayCanvas.width = window.innerWidth * 2; // увеличиваем размер фона
+            backgroundCanvas.height = overlayCanvas.height = window.innerHeight * 2; // увеличиваем размер фона
 
             // Redraw the background gradient after resizing
             drawBackground();
@@ -197,7 +196,12 @@
 
         // Create a colorful background with random colors
         function drawBackground(colors = selectedColors) {
-            const gradient = bgCtx.createLinearGradient(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+            const angle = getRandomAngle(); // получаем случайный угол
+            const gradient = bgCtx.createLinearGradient(
+                0, 0,
+                backgroundCanvas.width * Math.cos(angle * Math.PI / 180),
+                backgroundCanvas.height * Math.sin(angle * Math.PI / 180)
+            );
             if (colors.length === 0) {
                 gradient.addColorStop(0, getRandomColor());
                 gradient.addColorStop(0.25, getRandomColor());
@@ -216,13 +220,6 @@
 
         // Change the background to a new random gradient
         function changeBackground() {
-            drawBackground();
-        }
-
-        // Randomize the gradient angle and style
-        function randomizeGradient() {
-            const angle = getRandomAngle();
-            backgroundCanvas.style.transform = `rotate(${angle}deg)`;
             drawBackground();
         }
 
