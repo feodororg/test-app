@@ -88,7 +88,7 @@
         }
         .color-circles {
             position: absolute;
-            top: 70px; /* Под кнопками меню */
+            bottom: 10px; /* Выровнено по нижнему левому углу */
             left: 10px;
             display: none;
             flex-direction: column;
@@ -102,7 +102,7 @@
         }
         .close-button {
             position: absolute;
-            top: calc(70px + 60px); /* смещено на 60 пикселей ниже */
+            bottom: 70px; /* смещено на 60 пикселей выше */
             left: 10px;
             width: 40px;
             height: 40px;
@@ -160,7 +160,7 @@
                 console.error('Orientation lock failed: ', error);
             });
         } else if (screen.lockOrientation) {
-            // For older APIs
+            // Для старых API
             screen.lockOrientation('portrait').catch(function(error) {
                 console.error('Orientation lock failed: ', error);
             });
@@ -177,8 +177,8 @@
 
         // Resize canvases to fill the window
         function resizeCanvases() {
-            backgroundCanvas.width = overlayCanvas.width = window.innerWidth * 2; // увеличиваем размер фона
-            backgroundCanvas.height = overlayCanvas.height = window.innerHeight * 2; // увеличиваем размер фона
+            backgroundCanvas.width = overlayCanvas.width = window.innerWidth;
+            backgroundCanvas.height = overlayCanvas.height = window.innerHeight;
 
             // Redraw the background gradient after resizing
             drawBackground();
@@ -197,11 +197,9 @@
         // Create a colorful background with random colors
         function drawBackground(colors = selectedColors) {
             const angle = getRandomAngle(); // получаем случайный угол
-            const gradient = bgCtx.createLinearGradient(
-                0, 0,
-                backgroundCanvas.width * Math.cos(angle * Math.PI / 180),
-                backgroundCanvas.height * Math.sin(angle * Math.PI / 180)
-            );
+            const x = backgroundCanvas.width * Math.cos(angle * Math.PI / 180);
+            const y = backgroundCanvas.height * Math.sin(angle * Math.PI / 180);
+            const gradient = bgCtx.createLinearGradient(0, 0, x, y);
             if (colors.length === 0) {
                 gradient.addColorStop(0, getRandomColor());
                 gradient.addColorStop(0.25, getRandomColor());
