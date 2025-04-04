@@ -230,17 +230,14 @@
         function selectColorFromGradient(event) {
             const rect = colorGradientLine.getBoundingClientRect();
             const y = event.clientY - rect.top;
-            const gradientHeight = rect.height;
-            const colorIndex = Math.floor((y / gradientHeight) * 100); // Скорректированный индекс
-            const colors = ['yellow', 'yellow', 'cyan', 'cyan']; // Скорректированные цвета
-            const totalHeight = gradientHeight - 50; // Общее количество пикселей градиента
+            const gradientHeight = rect.height - 50; // Adjusted height for the yellow and cyan sections
             let selectedColor;
             if (y < 20) {
                 selectedColor = 'yellow';
-            } else if (y > totalHeight) {
+            } else if (y > gradientHeight) {
                 selectedColor = 'cyan';
             } else {
-                const gradientPosition = (y - 20) / totalHeight;
+                const gradientPosition = (y - 20) / gradientHeight;
                 const r = Math.floor(255 * (1 - gradientPosition));
                 const g = Math.floor(255 * gradientPosition);
                 const b = Math.floor(255 * gradientPosition);
