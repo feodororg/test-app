@@ -61,8 +61,8 @@
             justify-content: center;
         }
         .palette-button img {
-            width: 30px;
-            height: 30px;
+            width: 20px;
+            height: 20px;
         }
         button {
             background-color: white;
@@ -82,7 +82,7 @@
             align-items: center;
             justify-content: center;
         }
-        .refresh-button svg {
+        .refresh-button img {
             width: 20px;
             height: 20px;
         }
@@ -103,7 +103,7 @@
         }
         .close-button {
             position: absolute;
-            top: calc(50% + 40px);
+            top: calc(50% + 60px);
             left: 50%;
             transform: translate(-50%, -50%);
             width: 40px;
@@ -133,17 +133,13 @@
             <div class="large-circle"></div>
         </button>
         <button onclick="changeBackground()">CHANGE</button>
+        <button onclick="saveImage()">SAVE</button>
         <button class="palette-button" onclick="showColorPicker()">
-            <img src="palette-icon.png" alt="Palette">
+            <img src="pict1-01.svg" alt="Palette">
         </button>
         <button class="refresh-button" onclick="refreshPage()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 4 23 10 17 10"></polyline>
-                <polyline points="1 20 1 14 7 14"></polyline>
-                <path d="M3.51 9a9 9 0 015.37-4.34L7 2m10 20a9 9 0 01-5.37 4.34L17 22M1 12a11 11 0 0019.5 6.5M23 12a11 11 0 00-19.5-6.5"></path>
-            </svg>
+            <img src="pict1-02.svg" alt="Refresh">
         </button>
-        <button onclick="saveImage()">SAVE</button>
     </div>
     <div class="color-circles" id="colorCircles">
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
