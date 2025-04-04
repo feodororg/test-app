@@ -7,7 +7,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style"="black-translucent">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <style>
         body {
@@ -20,68 +20,36 @@
             top: 0;
             left: 0;
         }
-        .circle-button {
-            width: 60px;
-            height: 60px;
+        .circle-button, .palette-button, .refresh-button, .save-button {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             padding: 0;
-            margin-right: 5px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             background-color: transparent;
             border: none;
             cursor: pointer;
+            margin-right: 5px;
+        }
+        .small-circle, .medium-circle, .large-circle {
+            background-color: white;
+            border-radius: 50%;
         }
         .small-circle {
             width: 6px;
             height: 6px;
-            border-radius: 50%;
-            background-color: white;
         }
         .medium-circle {
             width: 12px;
             height: 12px;
-            border-radius: 50%;
-            background-color: white;
         }
         .large-circle {
             width: 20px;
             height: 20px;
-            border-radius: 50%;
-            background-color: white;
         }
-        .palette-button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            margin-right: 5px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .palette-button img {
-            width: 40px;
-            height: 40px;
-        }
-        button {
-            background-color: white;
-            color: black;
-            border: none;
-            padding: 15px 20px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-        .refresh-button {
-            padding: 10px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .refresh-button img {
+        .circle-button img, .palette-button img, .refresh-button img, .save-button img {
             width: 40px;
             height: 40px;
         }
@@ -90,9 +58,9 @@
             bottom: 0;
             left: 0;
             width: 40px;
-            height: 60%; /* Высота линии 60% экрана */
-            background: linear-gradient(to top, red, yellow, green, cyan, blue, magenta, orange, purple, pink, brown, white); /* Пример градиента */
-            display: none; /* Скрыта по умолчанию */
+            height: 60%;
+            background: linear-gradient(to top, red, yellow, green, cyan, blue, magenta, orange, purple, pink, brown, white);
+            display: none;
         }
         .close-button {
             width: 40px;
@@ -111,7 +79,7 @@
 <body>
     <canvas id="backgroundCanvas"></canvas>
     <canvas id="overlayCanvas"></canvas>
-    <div style="position: absolute; top: 10px; left: 10px; z-index: 10;">
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 5px;">
         <button class="circle-button" onclick="setBrushSize(4)">
             <div class="small-circle"></div>
         </button>
@@ -121,18 +89,20 @@
         <button class="circle-button" onclick="setBrushSize(20)">
             <div class="large-circle"></div>
         </button>
-        <button class="palette-button" onclick="changeBackground()" style="margin-left: calc(50% - 20px);">
+        <button class="palette-button" onclick="changeBackground()">
             <img src="but_2.png" alt="Change">
         </button>
         <button class="refresh-button" onclick="refreshPage()">
-            <img src="but_3.svg" alt="Refresh">
+            <img src="but_1.svg" alt="Refresh">
         </button>
-        <button onclick="saveImage()">SAVE</button>
+        <button class="save-button" onclick="saveImage()">
+            <img src="but_4.svg" alt="Save">
+        </button>
         <button class="palette-button" onclick="showColorPicker()">
             <img src="pict1-01.svg" alt="Palette">
         </button>
     </div>
-    <div class="color-gradient-line" id="colorGradientLine"></div>
+    <div class="color-gradient-line" id="colorGradientLine" onclick="selectColorFromGradient(event)"></div>
     <div class="color-circles" id="colorCircles">
         <button class="close-button" id="closeButton" onclick="hideColorPicker()">✖</button>
         <div class="color-circle" style="background-color: red;" onclick="selectColor('red')"></div>
@@ -234,6 +204,16 @@
         function selectColor(color) {
             tempColors.push(color);
             drawBackground(tempColors);
+        }
+
+        // Select a color from the gradient line
+        function selectColorFromGradient(event) {
+            const rect = colorGradientLine.getBoundingClientRect();
+            const y = event.clientY - rect.top;
+            const gradientHeight = rect.height;
+            const colorIndex = Math.floor((y / gradientHeight) * 11); // 11 colors in gradient
+            const colors = ['red', 'yellow', 'green', 'cyan', 'blue', 'magenta', 'orange', 'purple', 'pink', 'brown', 'white'];
+            selectColor(colors[colorIndex]);
         }
 
         // Initialize the canvases
