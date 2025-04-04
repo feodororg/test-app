@@ -148,7 +148,6 @@
         <div class="color-circle" style="background-color: purple;" onclick="selectColor('purple')"></div>
         <div class="color-circle" style="background-color: pink;" onclick="selectColor('pink')"></div>
         <div class="color-circle" style="background-color: brown;" onclick="selectColor('brown')"></div>
-        <div class="color-circle" style="background-color: black;" onclick="selectColor('black')"></div>
         <div class="color-circle" style="background-color: white;" onclick="selectColor('white')"></div>
     </div>
     <script>
@@ -171,6 +170,7 @@
         const closeButton = document.getElementById('closeButton');
         let selectedColors = [];
         let tempColors = [];
+        let currentAngle = getRandomAngle();
 
         // Resize canvases to fill the window
         function resizeCanvases() {
@@ -193,15 +193,12 @@
 
         // Create a colorful background with random colors
         function drawBackground(colors = selectedColors) {
-            const angle = getRandomAngle(); // получаем случайный угол
-            const x = backgroundCanvas.width * Math.cos(angle * Math.PI / 180);
-            const y = backgroundCanvas.height * Math.sin(angle * Math.PI / 180);
+            const x = backgroundCanvas.width * Math.cos(currentAngle * Math.PI / 180);
+            const y = backgroundCanvas.height * Math.sin(currentAngle * Math.PI / 180);
             const gradient = bgCtx.createLinearGradient(0, 0, x, y);
-            if (colors.length === 0) {
+            if (colors.length < 2) {
                 gradient.addColorStop(0, getRandomColor());
-                gradient.addColorStop(0.25, getRandomColor());
                 gradient.addColorStop(0.5, getRandomColor());
-                gradient.addColorStop(0.75, getRandomColor());
                 gradient.addColorStop(1, getRandomColor());
             } else {
                 const step = 1 / (colors.length - 1);
@@ -215,6 +212,7 @@
 
         // Change the background to a new random gradient with a random angle
         function changeBackground() {
+            currentAngle = getRandomAngle();
             drawBackground();
         }
 
