@@ -31,7 +31,11 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
-            margin-right: 0px; /* Уменьшено расстояние между кнопками */
+            margin-right: 10px; /* Увеличено расстояние между кнопками */
+        }
+        .save-button {
+            width: 60px; /* Увеличена кнопка save */
+            height: 60px;
         }
         .small-circle, .medium-circle, .large-circle {
             background-color: white;
@@ -52,6 +56,10 @@
         .circle-button img, .palette-button img, .refresh-button img, .save-button img {
             width: 40px;
             height: 40px;
+        }
+        .save-button img {
+            width: 50px; /* Увеличена картинка на кнопке save */
+            height: 50px;
         }
         .color-gradient-line {
             position: absolute;
@@ -79,7 +87,7 @@
 <body>
     <canvas id="backgroundCanvas"></canvas>
     <canvas id="overlayCanvas"></canvas>
-    <div style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 0px;">
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 10px;">
         <button class="circle-button" onclick="setBrushSize(4)">
             <div class="small-circle"></div>
         </button>
